@@ -2,10 +2,10 @@
 
 In the project directory, you can run:
 
-node server
+##node server
 The Server Starts
-Open http://localhost:5000 to view it in the browser.
+http://localhost:5000 .
 
-npm run dev
+##npm run dev
 Starts server with nodemon in developement Mode 
 
