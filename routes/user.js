@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+const jwt = require("jsonwebtoken");
 
 router.post(
   "/register/:email/:password/:firstName/:lastName/:mobileNumber",
@@ -16,15 +17,8 @@ router.post(
     }
     const saltRounds = 10;
     let hashedPassword;
-    bcrypt
-      .genSalt(saltRounds)
-      .then((salt) => {
-        return bcrypt.hash(password, salt);
-      })
-      .then((hash) => {
-        hashedPassword = hash;
-      });
 
+    hashedPassword = bcrypt.hashSync(password, saltRounds);
     try {
       const isAlreadyUser = await User.findOne({ email: email });
 
@@ -33,11 +27,11 @@ router.post(
         return;
       }
       const newUser = {
-        email,
+        email: email,
         password: hashedPassword,
-        firstName,
-        lastName,
-        mobileNumber,
+        firstName: firstName,
+        lastName: lastName,
+        mobilenumber: mobileNumber,
       };
       // console.log(newUser);
       User.create(newUser, (err) => {
@@ -56,22 +50,56 @@ router.post(
 router.get("/login/:email/:password", async (req, res) => {
   const email = req.params.email;
   const password = req.params.password;
+
   try {
-    const isAlreadyUser = User.findOne({ email: email });
-
-    if (!isAlreadyUser) {
+    const isAlreadyUser = await User.find({ email: email });
+    if (isAlreadyUser.length === 0) {
       res.status(203).json({ message: "User not found" });
+      return;
     }
+    const user = isAlreadyUser[0];
+    let isValid = false;
+    isValid = bcrypt.compareSync(password, user.password);
 
-    const isValid = bcrypt.compare(password, isAlreadyUser.password);
+    const tokenUser = {
+      email: user.email,
+      password: user.password,
+    };
+
+    const token = jwt.sign(tokenUser, process.env.KEY, {
+      expiresIn: 20,
+      algorithm: process.env.ALGORITHM,
+    });
 
     if (!isValid) {
-      res.status(204).json({ message: "Incorrect password" });
+      // console.log("token not sent", token);
+      return res.status(204).json({ message: "Incorrect password" });
     } else {
-      res.status(200).json({ message: "Authenticated User" });
+      // console.log("token sent", token);
+      return res.status(200).json({ token: token.toString() });
     }
   } catch (err) {
     console.log(err);
   }
 });
+
+router.get("/verifyToken/:token", (req, res) => {
+  const token = req.params.token;
+
+  if (!token) {
+    res.status(206).json({ message: "not verified" });
+  }
+  jwt.verify(token, process.env.KEY, (err, verifiedToken) => {
+    if (err) {
+      console.log(err);
+      res.status(206).json({ message: "not verfied" });
+    } else {
+      // console.log("Token: ", token);
+      console.log("Verified");
+
+      res.status(200).json({ message: "verified Token", token: verifiedToken });
+    }
+  });
+});
+
 module.exports = router;
