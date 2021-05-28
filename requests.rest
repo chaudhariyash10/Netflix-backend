@@ -1,1 +1,1 @@
-GET http://localhost:5000/post
+GET http://localhost:5000/login/:yash@gmail.com/:Yashch

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 // const passport = require('passport');
 const dotenv = require("dotenv");
+
 const bodyParser = require('body-parser');
 const cors = require("cors");
 const UserRoutes = require('./routes/user');
@@ -35,6 +36,6 @@ App.use(cors(
 
 App.use('/user', UserRoutes);
 
-App.listen(5000, () => {
+App.listen(process.env.PORT, () => {
   console.log('Server started.')
 });

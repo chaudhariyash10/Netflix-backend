@@ -67,7 +67,7 @@ router.get("/login/:email/:password", async (req, res) => {
     };
 
     const token = jwt.sign(tokenUser, process.env.KEY, {
-      expiresIn: 20,
+      expiresIn: 60,
       algorithm: process.env.ALGORITHM,
     });
 
@@ -95,7 +95,7 @@ router.get("/verifyToken/:token", (req, res) => {
       res.status(206).json({ message: "not verfied" });
     } else {
       // console.log("Token: ", token);
-      console.log("Verified");
+      // console.log("Verified");
 
       res.status(200).json({ message: "verified Token", token: verifiedToken });
     }
