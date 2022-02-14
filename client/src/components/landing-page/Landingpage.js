@@ -115,18 +115,26 @@ function Homepage() {
             <div className="offset-sm-4 col-sm-4">
               <ul className="social-icons">
                 <li>
-                  <a className="facebook" href="#">
+                  <a className="facebook" href="www.facebook.com">
                     {/* <i className="fa fa-facebook"></i> */}
                     {/* <FontAwesomeIcon icon={(fab, faFacebookF)} /> */}
                   </a>
                 </li>
                 <li>
-                  <a className="twitter" href="#">
+                  <a
+                    className="twitter"
+                    href="www.facebook.com;
+"
+                  >
                     <i className="fa fa-twitter"></i>
                   </a>
                 </li>
                 <li>
-                  <a className="linkedin" href="#">
+                  <a
+                    className="linkedin"
+                    href="www.facebook.com;
+"
+                  >
                     {/* <i className="fa fa-linkedin"></i> */}
                     {/* <FontAwesomeIcon icon={(fas, faLinkedin)} />; */}
                   </a>

@@ -45,11 +45,11 @@ function Homepage() {
           fetchURL={requests.fetchHorrorMovies}
           isLargeRow
         />
-        {/* <Row
-        title="Documentaries"
-        fetchURL={requests.fetchDocumentaries}
-        isLargeRow
-      /> */}
+        <Row
+          title="Documentaries"
+          fetchURL={requests.fetchDocumentaries}
+          isLargeRow
+        />
       </div>
     );
   else {

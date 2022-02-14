@@ -68,7 +68,6 @@ router.get("/login/:email/:password", async (req, res) => {
 
     const token = jwt.sign(tokenUser, process.env.KEY, {
       expiresIn: 60,
-      algorithm: process.env.ALGORITHM,
     });
 
     if (!isValid) {
